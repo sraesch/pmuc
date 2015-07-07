@@ -1,6 +1,8 @@
 project(pmuc)
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_DEBUG_POSTFIX "d")
+
 SET(CMAKE_MODULE_PATH "${pmuc_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 
 find_package(OpenGL REQUIRED)
@@ -9,6 +11,10 @@ find_package(OpenGL REQUIRED)
 if(UNIX)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 endif()
+
+find_package(OpenGL REQUIRED)
+
+include_directories(${OPENGL_INCLUDE_DIR})
 
 find_package(XIOT)
 if (XIOT_FOUND)
@@ -31,20 +37,14 @@ endif (ICONV_FOUND)
 
 aux_source_directory(src SRC_LIST)
 aux_source_directory(src/api APISRC_LIST)
-aux_source_directory(src/converters CONVERTERSSRC_LIST)
 
 add_library(rvm ${APISRC_LIST})
 if (ICONV_FOUND)
     target_link_libraries(rvm STATIC ${ICONV_LIBRARY})
 endif (ICONV_FOUND)
 
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${APISRC_LIST} ${CONVERTERSSRC_LIST})
-if (XIOT_FOUND)
-    target_link_libraries(${PROJECT_NAME} ${OPENCOLLADASW_LIBRARIES} ${OPENGL_LIBRARIES})
-endif (XIOT_FOUND)
-if (OPENCOLLADASW_FOUND)
-    target_link_libraries(${PROJECT_NAME} ${XIOT_LIBRARY})
-endif (OPENCOLLADASW_FOUND)
-if (ICONV_FOUND)
-    target_link_libraries(${PROJECT_NAME} ${ICONV_LIBRARY})
-endif (ICONV_FOUND)
+
+file(GLOB HEADER_FILES "src/api/*.h")
+
+install(TARGETS rvm DESTINATION lib)
+install(FILES ${HEADER_FILES} DESTINATION include/api)
