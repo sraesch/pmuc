@@ -12,24 +12,10 @@ if(UNIX)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
 endif()
 
-find_package(OpenGL REQUIRED)
-
 include_directories(${OPENGL_INCLUDE_DIR})
 
-find_package(XIOT)
-if (XIOT_FOUND)
-    include_directories( ${XIOT_INCLUDE_DIR} )
-    add_definitions( -DXIOT_FOUND )
-endif (XIOT_FOUND)
-find_package(OpenCOLLADASW)
-if (OPENCOLLADASW_FOUND)
-    include_directories( ${OPENCOLLADASW_INCLUDE_DIR} )
-    include_directories( ${OPENCOLLADABU_INCLUDE_DIR} )
-    add_definitions( -DOPENCOLLADASW_FOUND )
-endif (OPENCOLLADASW_FOUND)
-find_package(EIGEN REQUIRED)
-include_directories( ${EIGEN_INCLUDE_DIR} )
 find_package(Iconv)
+
 if (ICONV_FOUND)
     include_directories( ${ICONV_INCLUDE_DIR} )
     add_definitions( -DICONV_FOUND )
@@ -39,10 +25,10 @@ aux_source_directory(src SRC_LIST)
 aux_source_directory(src/api APISRC_LIST)
 
 add_library(rvm ${APISRC_LIST})
+
 if (ICONV_FOUND)
     target_link_libraries(rvm STATIC ${ICONV_LIBRARY})
 endif (ICONV_FOUND)
-
 
 file(GLOB HEADER_FILES "src/api/*.h")
 
