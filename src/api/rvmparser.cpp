@@ -236,31 +236,13 @@ void readArray_(std::istream &in, T(&a)[size])
 template<size_t numInts>
 inline void skip_(std::istream& in)
 {
-    in.seekg(sizeof(int) * numInts, in.cur);
-}
-
-template<>
-inline void skip_<1>(std::istream& in)
-{
-    in.get();
-    in.get();
-    in.get();
-    in.get();
-}
-
-template<>
-inline void skip_<2>(std::istream& in)
-{
-    skip_<1>(in);
-    skip_<1>(in);
-}
-
-template<>
-inline void skip_<3>(std::istream& in)
-{
-    skip_<1>(in);
-    skip_<1>(in);
-    skip_<1>(in);
+    for (size_t i = 0; i < numInts; ++i)
+    {
+        in.get();
+        in.get();
+        in.get();
+        in.get();
+    }
 }
 
 static string trim(const string& s)
