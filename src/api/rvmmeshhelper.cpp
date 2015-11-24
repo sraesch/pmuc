@@ -97,7 +97,7 @@ void CALLBACK tessEdgeFlag(GLboolean flag, void * polygon_data) {
 }
 
 void CALLBACK tessError(GLenum err) {
-    cout << "error: " << gluErrorString(err) << endl;
+    std::cerr << "error: " << gluErrorString(err) << endl;
 }
 
 void CALLBACK tessCombineData(GLdouble newVert[3], GLdouble *neighbourVert[4], GLfloat neighborWeight[4], void **outData, void * polygon_data)
@@ -596,7 +596,7 @@ const Mesh RVMMeshHelper2::makeSnout(const Primitives::Snout& snout, unsigned lo
         points.push_back(v);
         if (height > 0.0f)
         {
-            float dh = sqrt(((rtop * c + xoffset - rbottom * c)*(rtop * c + xoffset - rbottom * c) + (rtop * s + yoffset - rbottom * s)*(rtop * s + yoffset - rbottom * s)) / (height*height));
+            float dh = sqrt(fabs(((rtop * c + xoffset - rbottom * c)*(rtop * c + xoffset - rbottom * c) + (rtop * s + yoffset - rbottom * s)*(rtop * s + yoffset - rbottom * s)) / (height*height)));
             n[0] = c; n[1] = s; n[2] = (rtop < rbottom) ? dh : -dh;
             n.normalize();
         }
@@ -665,6 +665,7 @@ const Mesh RVMMeshHelper2::makeSnout(const Primitives::Snout& snout, unsigned lo
     result.positionIndex = index;
     result.normals = vectors;
     result.normalIndex = normalindex;
+
     return result;
 }
 
