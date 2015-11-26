@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 
 # Set C++11 flags to makesome function work
 if(UNIX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x -fPIC" )
 endif()
 
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -24,7 +24,7 @@ endif (ICONV_FOUND)
 aux_source_directory(src SRC_LIST)
 aux_source_directory(src/api APISRC_LIST)
 
-add_library(rvm ${APISRC_LIST})
+add_library(rvm SHARED ${APISRC_LIST})
 
 if (ICONV_FOUND)
     target_link_libraries(rvm STATIC ${ICONV_LIBRARY})
